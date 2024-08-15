@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$phar=new Phar('deploy.phar');
+$phar=new Phar('deploy_commands.phar');
 $phar->buildFromDirectory('files/');
 if (Phar::canCompress(Phar::GZ))
 {

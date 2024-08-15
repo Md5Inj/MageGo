@@ -1,0 +1,9 @@
+autoloaders:
+  MAN98: %root%/dev/man98/src
+
+commands:
+  customCommands:
+    - MAN98\Dev\GitBranch
+    - MAN98\Dev\Deploy
+    - MAN98\Dev\InstallUser
+    - MAN98\Dev\FullDeploy

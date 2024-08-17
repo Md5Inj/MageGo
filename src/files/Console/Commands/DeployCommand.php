@@ -31,6 +31,7 @@ class DeployCommand extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
+        // TODO rework code to support LXC container
         $currentDir = dirname(Phar::running(false));
         $pharName = basename(Phar::running(false));
         $extractDir = $currentDir . '/deploy_files';

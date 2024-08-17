@@ -89,12 +89,11 @@ class ConfigureGrunt extends AbstractCommand
     public function getHelpText(): string
     {
         return "
-        
-configure:ssh: Makes possible to login via SSH to box. Adds private key to the box
+configure:grunt: Make all stuff to install Grunt including local-themes file creation. After execution grunt already can be used
     Usage:
         - configure:ssh -b <container_name>
     Parameters:
-        -b: The name of the LXC container where Xdebug will be configured.
+        -b: The name of the LXC container
         -magentoDir: Magento root directory (default = /var/www/source)
 ";
     }

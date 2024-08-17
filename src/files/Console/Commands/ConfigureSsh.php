@@ -92,7 +92,7 @@ configure:ssh: Makes possible to login via SSH to box. Adds private key to the b
     Usage:
         - configure:ssh -b <container_name>
     Parameters:
-        -b: The name of the LXC container where Xdebug will be configured.
+        -b: The name of the LXC container.
         -u: Name of the SSH user (default = www-data)
         -keyPath: Private key path
 ";

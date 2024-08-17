@@ -8,6 +8,12 @@ This script provides the possibility to set up with one click:
 - SSH
 - Coding standards (PHPCS, PHPMD)
 
+## Installation
+Run following command
+```
+curl -o- https://raw.githubusercontent.com/Md5Inj/MageGo/main/install.sh | bash
+```
+
 ## Usage
 
 1. **Install MageGo**

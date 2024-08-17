@@ -51,7 +51,7 @@ class HelpCommand extends AbstractCommand
      */
     private function generateHelpText(array $commands): string
     {
-        $helpText = "\nUsage: deploy_commands.phar [options]\n\n";
+        $helpText = "\nUsage: magego.phar [options]\n\n";
         $helpText .= "Available options:\n";
         foreach ($commands as $command) {
             $helpText .= $command->getHelpText();

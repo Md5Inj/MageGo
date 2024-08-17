@@ -1,23 +1,56 @@
-# Magerun2 Custom Commands Deployer
+# MageGo
 
 This script deploys custom Magerun2 commands to a Magento installation. It checks if the current directory is the Magento root, extracts necessary files, and places them in the correct locations.
 
-## Features
-
-- **Magento Root Check**: Verifies that the script is run from the Magento root directory.
-- **File Extraction**: Extracts files from the archive, excluding `index.php`, and preserves directory structure.
-- **File Deployment**: Moves custom Magerun2 commands and configurations to their respective locations.
+This script provides the possibility to set up with one click:
+- Grunt
+- Xdebug
+- SSH
+- Coding standards (PHPCS, PHPMD)
 
 ## Usage
 
-1. **Navigate to Magento Root**: Ensure you are in the root directory of your Magento installation.
-2. **Download commands deployer**: Download command deployer into Magento root
-2. **Run the Script**: Execute the script to deploy custom Magerun2 commands.
-
+1. **Install MageGo**
+2. **Run it**
    ```bash
-   php ./deploy_commands.phar
+   php ./magego.phar
 
-## Custom Commands
+## Commands
+### --help
+- Displays a list of available commands or detailed help for a specific command.
+### -vvv
+- Enable verbose output for commands, providing more detailed logs and error messages.
+### self-update
+- Updates the **MageGo** to the latest version.
+### --version
+- Shows current version
+### deploy
+- Deploy custom commands packaged within a PHAR (PHP Archive) file to a Magento application. It extracts the PHAR file contents to a specified directory and verifies if the current directory is a Magento root directory before proceeding with the extraction.
+### outdated
+- Check the script for updates and reports if a newer version is available.
+### install:coding-standards
+- Install coding standards tools (PHPCS, PHPMD) into an LXC container.
+- **Available options**:
+  - `-b <container_name>`: **Required**. The name of the LXC container where the coding standards tools will be installed.
+### configure:xdebug
+- Configures Xdebug for PHP on an LXC container. 
+- **Available options**
+  - `-b <container_name>`: **Required**. The name of the LXC container where the xdebug should be configured.
+### configure:ssh
+- Configure SSH access to an LXC container by adding a private key.
+- **Available options**
+  - `-b <container_name>`: **Required**. The name of the LXC container where SSH will be configured.
+  - `-u <ssh_user>`: **Optional**. The name of the SSH user to configure. Default is `www-data`.
+  - `--keyPath <key_path>`: **Optional**. The path to the private key file to be added to the container.
+### configure:grunt
+- Configures Grunt for the Magento installation in an LXC container.
+- **Available options**
+  - `-b <container_name>`: **Required**. The name of the LXC container where Grunt will be configured.
+  - `--magentoDir <magento_directory>`: **Optional**. The Magento root directory inside the container. Default is `/var/www/source`.
+
+
+
+### Custom Commands for MageRun2
 
 - **`dev:git:branch`**: This command shelves current changes. Fetches data from the repository. Changes the current branch.
   1. **Enable Maintenance Mode**:
@@ -69,3 +102,16 @@ This script deploys custom Magerun2 commands to a Magento installation. It check
         - **Password**: `admin123`
         - **First Name**: `Admin`
         - **Last Name**: `Admin`
+
+- `db:install`: Installs a database from `MAGENTO_ROOT/dumps` directory with one click.
+- `db:init`: Installs a fresh database and runs post-import actions.
+  - Behavior:
+    - Activates maintenance mode.
+    - Executes database installation and sanitization.
+    - Installs user-related configurations.
+    - Deactivates maintenance mode.
+- `db:sanitize`: Sanitizes database entries as per the defined rules.
+    - Behavior:
+        - Initiate the database sanitization process. 
+        - Custom actions for sanitization can be added in the command implementation.
+- 

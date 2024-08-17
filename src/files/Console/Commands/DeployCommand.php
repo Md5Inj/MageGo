@@ -31,15 +31,13 @@ class DeployCommand extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
-        // @TDOO re-check how extract goes
-
         $currentDir = dirname(Phar::running(false));
         $pharName = basename(Phar::running(false));
         $extractDir = $currentDir . '/deploy_files';
 
         if (empty($currentDir) || empty($pharName)) {
             $this->output->writeError('Something went wrong when initializing script');
-            exit(0);
+            return;
         }
 
         $magentoChecker = new MagentoChecker($currentDir);

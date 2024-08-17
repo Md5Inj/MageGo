@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MaksimRamashka\Deploy\Model;
 
+use Exception;
 use Phar;
 use RecursiveIteratorIterator;
 
@@ -11,7 +12,9 @@ class PharExtractor
 {
     private const SERVICE_FILES_LIST = [
         'index.php',
-        'autoload.php'
+        'autoload.php',
+        'Console',
+        'Model'
     ];
 
     /**
@@ -52,10 +55,10 @@ class PharExtractor
      * Extract all files for phar
      *
      * @return void
+     * @throws Exception
      */
     public function execute(): void
     {
-
         if (!is_dir($this->extractDir)) {
             mkdir($this->extractDir, 0755, true);
         }
@@ -65,11 +68,13 @@ class PharExtractor
             $relativePath = str_replace('phar://' . $this->phar->getPath() . '/', '', $file->getPathname());
 
             // Skip service files
-            if (in_array($file->getFilename(), self::SERVICE_FILES_LIST)) {
+            if (
+                in_array($file->getFilename(), self::SERVICE_FILES_LIST)
+                || str_contains($file->getPathName(), '/Model/')
+                || str_contains($file->getPathName(), '/Console/')
+            ) {
                 continue;
             }
-
-            // TODO skip lib files
 
             if ($file->isDir()) {
                 $this->fileManagement->createDirectory($this->extractDir . '/' . $relativePath);

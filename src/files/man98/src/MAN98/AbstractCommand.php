@@ -7,8 +7,8 @@ require_once __DIR__ . '/../../../../vendor/autoload.php';
 use N98\Magento\Command\AbstractMagentoCommand;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class AbstractCommand extends AbstractMagentoCommand
 {
@@ -74,5 +74,61 @@ class AbstractCommand extends AbstractMagentoCommand
         }
 
         return $code;
+    }
+
+    /**
+     * @param $env
+     *
+     * @return false|mixed
+     */
+    protected function _getDB(string $env = 'default')
+    {
+        $dbConf = false;
+        if (file_exists(self::ENV_PATH)) {
+            $conf = include self::ENV_PATH;
+            if (!empty($conf['db']['connection'][$env])) {
+                $dbConf = $conf['db']['connection'][$env];
+            }
+
+            if (!$dbConf && !empty($conf['db']['connection']['default'])) {
+                $dbConf = $conf['db']['connection']['default'];
+            }
+        }
+
+        if (!$dbConf) {
+            return false;
+        }
+
+        if (strpos($dbConf['host'], ':')) {
+            $tmp = explode(':', $dbConf['host']);
+            $dbConf['host'] = $tmp[0];
+            $dbConf['port'] = (int) $tmp[1];
+        } else {
+            $dbConf['port'] = 3306;
+        }
+
+        return $dbConf;
+    }
+
+    protected function _getEnv($input)
+    {
+
+        if ($input->hasOption('env')) {
+            $this->_env = $input->getOption('env');
+        }
+
+        if (!$this->_env) {
+            $this->_env = getenv('ENV');
+        }
+
+        if (!$this->_env) {
+            $this->_env = 'dev';
+        }
+
+        if ($input->hasOption('env')) {
+            $input->setOption('env', $this->_env);
+        }
+
+        return $this->_env;
     }
 }

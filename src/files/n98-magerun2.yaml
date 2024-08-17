@@ -7,3 +7,6 @@ commands:
     - MAN98\Dev\Deploy
     - MAN98\Dev\InstallUser
     - MAN98\Dev\FullDeploy
+    - MAN98\Dev\Db\Install
+    - MAN98\Dev\Db\Init
+    - MAN98\Dev\Db\Sanitize

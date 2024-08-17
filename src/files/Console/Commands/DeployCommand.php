@@ -31,6 +31,8 @@ class DeployCommand extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
+        // @TDOO re-check how extract goes
+
         $currentDir = dirname(Phar::running(false));
         $pharName = basename(Phar::running(false));
         $extractDir = $currentDir . '/deploy_files';

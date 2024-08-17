@@ -38,7 +38,7 @@ class HelpCommand extends AbstractCommand
             exit(0);
         }
 
-        $this->outdatedCommand->execute();
+        $this->outdatedCommand->execute(['print-only-outdated' => true]);
         $this->output->writeInfo($this->generateHelpText($arguments['commands']));
         exit(0);
     }

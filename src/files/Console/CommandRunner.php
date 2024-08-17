@@ -56,15 +56,13 @@ class CommandRunner
     public function run(array $argv): void
     {
         foreach ($argv as $parameter) {
-            $arguments = [];
-
             if ($parameter === '--help') {
-                $arguments['commands'] = $this->commands;
+                $argv['commands'] = $this->commands;
             }
 
             $command = $this->getCommandByParameterName($parameter);
             if ($command !== null) {
-                $command->execute($arguments);
+                $command->execute($argv);
                 exit(0);
             }
         }

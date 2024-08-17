@@ -52,15 +52,19 @@ class OutdatedCommand extends AbstractCommand
 
         if (empty($latestVersion)) {
             $this->output->writeError('Failed to fetch the latest version.');
-            exit(1);
+            return;
         }
 
         if (empty($currentVersion)) {
             $this->output->writeError('Current version is unknown.');
-            exit(1);
+            return;
         }
 
         if ($latestVersion === $currentVersion) {
+            if (($arguments['print-only-outdated'] ?? false) === true) {
+                return;
+            }
+
             $this->output->writeSuccess('The PHAR file is up-to-date.');
             $this->output->writeInfo("Current version: "); $this->output->writeSuccess($currentVersion);
         } else {

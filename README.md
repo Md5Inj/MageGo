@@ -120,4 +120,3 @@ curl -o- https://raw.githubusercontent.com/Md5Inj/MageGo/main/install.sh | bash
     - Behavior:
         - Initiate the database sanitization process. 
         - Custom actions for sanitization can be added in the command implementation.
-- 

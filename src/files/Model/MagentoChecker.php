@@ -7,39 +7,37 @@ namespace MaksimRamashka\Deploy\Model;
 class MagentoChecker
 {
     /**
-     * @var string
-     */
-    private string $directory;
-
-    /**
-     * @param string $directory
-     */
-    public function __construct(string $directory)
-    {
-        $this->directory = $directory;
-    }
-
-    /**
      * Check if a script is running in magento directory
      *
+     * @param string $containerName
+     * @param string $folderPath
      * @return bool
      */
-    public function isMagentoRoot(): bool
+    public function isMagentoRoot(string $containerName, string $folderPath): bool
     {
-        $requiredFilesAndDirs = [
-            'app/etc/env.php',  // Environment configuration file
-            'bin/magento',      // Magento CLI script
-            'app',              // Application code directory
-            'lib',              // Library directory
-            'vendor',           // Composer dependencies directory
+        // List of essential Magento 2 files
+        $magentoFiles = [
+            'app/etc/config.php',
+            'bin/magento',
+            'composer.json',
+            'pub/index.php'
         ];
 
-        foreach ($requiredFilesAndDirs as $path) {
-            if (!file_exists($this->directory . '/' . $path)) {
-                return false;
-            }
-        }
+        // Prepare the command to check for each file
+        $commands = array_map(function($file) use ($folderPath) {
+            return "[ -f \"$folderPath/$file\" ]";
+        }, $magentoFiles);
 
-        return true;
+        // Combine all the checks with "&&" so that all must be true
+        $command = implode(' && ', $commands);
+
+        // Run the command in the LXC container
+        $fullCommand = "lxc exec $containerName -- sh -c '$command'";
+
+        // Execute the command and get the return status
+        exec($fullCommand, $output, $return_var);
+
+        // Return true if all files exist, false otherwise
+        return $return_var === 0;
     }
 }

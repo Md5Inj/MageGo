@@ -8,7 +8,7 @@ use Exception;
 
 class VersionManager
 {
-    private const VERSION = '1.0.1';
+    private const VERSION = '1.0.2';
 
     /**
      * @var ReleaseManager

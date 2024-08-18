@@ -74,6 +74,38 @@ class FileManagement
     }
 
     /**
+     * Delete directory
+     *
+     * @param string $directoryPath
+     * @return void
+     * @throws Exception
+     */
+    public function deleteDirectory(string $directoryPath): void
+    {
+        $this->checkForDirExistance($directoryPath);
+        $files = glob($directoryPath . '/*');
+        foreach ($files as $file) {
+            is_dir($file) ? $this->deleteDirectory($file) : unlink($file);
+        }
+        rmdir($directoryPath);
+    }
+
+    /**
+     * Check the directory for existance
+     *
+     * @param string $directoryPath
+     * @return void
+     * @throws Exception
+     */
+    private function checkForDirExistance(string $directoryPath): void
+    {
+        if (!is_dir($directoryPath)) {
+            throw new Exception("Directory '$directoryPath' is not exists");
+        }
+    }
+
+
+    /**
      * Throw an error if a file not exists
      *
      * @param string $filePath

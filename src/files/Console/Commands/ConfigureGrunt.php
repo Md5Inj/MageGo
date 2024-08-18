@@ -56,19 +56,13 @@ class ConfigureGrunt extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
-        $arguments = $this->parseArguments($arguments);
-        if (!isset($arguments['b'])) {
-            throw new Exception('Required argument b not passed');
-        }
-
         $containerName = $arguments['b'];
+        $magentoDirectory = $arguments['magentoDir'] ?? '/var/www/source';
+        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
+
         if (!$this->lxcManagement->isLxcContainerRunning($containerName)) {
             throw new Exception("LXC container $containerName is not running");
         }
-
-        $magentoDirectory = $arguments['magentoDir'] ?? '/var/www/source';
-
-        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
 
         if ($this->phar->offsetExists($scriptPath)) {
             $scriptContent = $this->phar->offsetGet($scriptPath)->getContent();
@@ -96,5 +90,13 @@ configure:grunt: Make all stuff to install Grunt including local-themes file cre
         -b: The name of the LXC container
         -magentoDir: Magento root directory (default = /var/www/source)
 ";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredParameters(): array
+    {
+        return ['b'];
     }
 }

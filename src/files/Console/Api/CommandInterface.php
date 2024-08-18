@@ -20,4 +20,11 @@ interface CommandInterface
      * @return string
      */
     public function getHelpText(): string;
+
+    /**
+     * Return required parameters
+     *
+     * @return array
+     */
+    public function getRequiredParameters(): array;
 }

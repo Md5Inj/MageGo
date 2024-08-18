@@ -56,17 +56,12 @@ class InstallCodingStandardsCommand extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
-        $arguments = $this->parseArguments($arguments);
-        if (!isset($arguments['b'])) {
-            throw new Exception('Required argument b not passed');
-        }
-
         $containerName = $arguments['b'];
+        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
+
         if (!$this->lxcManagement->isLxcContainerRunning($containerName)) {
             throw new \Exception("LXC container $containerName is not running");
         }
-
-        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
 
         if ($this->phar->offsetExists($scriptPath)) {
             $scriptContent = $this->phar->offsetGet($scriptPath)->getContent();
@@ -89,5 +84,13 @@ install:coding-standards: Install coding standards tools into lxc container
         - install:coding-standards -b <container_name>
     Parameters:
         - 'b': The name of the LXC container where Xdebug will be configured.";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredParameters(): array
+    {
+        return ['b'];
     }
 }

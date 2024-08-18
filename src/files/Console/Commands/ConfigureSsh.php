@@ -56,20 +56,14 @@ class ConfigureSsh extends AbstractCommand
      */
     public function execute(array $arguments = []): void
     {
-        $arguments = $this->parseArguments($arguments);
-        if (!isset($arguments['b'])) {
-            throw new Exception('Required argument b not passed');
-        }
-
         $containerName = $arguments['b'];
+        $sshUser = $arguments['u'] ?? '';
+        $keyPath = $arguments['keyPath'] ?? '';
+        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
+
         if (!$this->lxcManagement->isLxcContainerRunning($containerName)) {
             throw new \Exception("LXC container $containerName is not running");
         }
-
-        $sshUser = $arguments['u'] ?? '';
-        $keyPath = $arguments['keyPath'] ?? '';
-
-        $scriptPath = 'scripts/' . self::SCRIPT_NAME;
 
         if ($this->phar->offsetExists($scriptPath)) {
             $scriptContent = $this->phar->offsetGet($scriptPath)->getContent();
@@ -96,5 +90,13 @@ configure:ssh: Makes possible to login via SSH to box. Adds private key to the b
         -u: Name of the SSH user (default = www-data)
         -keyPath: Private key path
 ";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequiredParameters(): array
+    {
+        return ['b'];
     }
 }

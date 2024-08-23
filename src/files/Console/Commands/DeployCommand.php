@@ -53,12 +53,10 @@ class DeployCommand extends AbstractCommand
             throw new Exception("LXC container $containerName is not running");
         }
 
-        // TODO rework code to support LXC container
-        $currentDir = dirname(Phar::running(false));
         $pharName = basename(Phar::running(false));
-        $extractDir = $currentDir . '/deploy_files';
+        $extractDir = '/tmp/deploy_files';
 
-        if (empty($currentDir) || empty($pharName)) {
+        if (empty($pharName)) {
             $this->output->writeError('Something went wrong when initializing script');
             return;
         }

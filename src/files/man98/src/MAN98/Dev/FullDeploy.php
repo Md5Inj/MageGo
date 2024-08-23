@@ -29,9 +29,9 @@ class FullDeploy extends AbstractCommand
         $output->writeln('→ composer install');
         $this->process(['composer', 'install']);
 
-        $this->executeCommand('dev:install:user', $output);
         $this->executeCommand('setup:upgrade', $output);
         $this->executeCommand('setup:di:compile', $output);
+        $this->executeCommand('dev:install:user', $output);
 
         return 0;
     }
